@@ -33,7 +33,7 @@ const generateLocalPassport = () => {
       try {
         const user = await User.findOne({ where: { email } });
         if (!user || !(await comparePasswords(password, user))) {
-          return done(null, false, { message: "Incorrect email or password." });
+          return done(null, false, { msg: "Incorrect email or password." });
         }
         user.password = undefined;
         return done(null, user);
@@ -49,15 +49,20 @@ const generateLocalPassport = () => {
 
 const addAuthHandlers = (app) => {
   app.post("/api/v1/login", passport.authenticate("local"), (req, res) => {
-    return res.status(200).json(req.user);
+    return res
+      .status(200)
+      .json({
+        msg: "logged in successfully",
+        data: { msg: "health check passed! API is alive.", data: req.user },
+      });
   });
 
   app.post("/api/v1/logout", (req, res) => {
     req.logout((err) => {
       if (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ msg: err.message });
       }
-      return res.status(200).json({ message: "Logged out successfully." });
+      return res.status(200).json({ msg: "Logged out successfully." });
     });
   });
 };

@@ -10,8 +10,8 @@ const registerRoutes = (app) => {
   });
 
   // auth routes
-  app.post("/api/v1/users/register", registerUser);
-  app.get("/api/v1/users", authorize(UserType.manager), getUsers);
+  app.post("/api/v1.0/users/register", registerUser);
+  app.get("/api/v1.0/users", authorize(UserType.manager), getUsers);
 };
 
 module.exports = registerRoutes;

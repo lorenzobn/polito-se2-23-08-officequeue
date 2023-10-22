@@ -3,8 +3,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const { addAuthHandlers } = require("./auth");
-import { runMigrations } from "./models";
-
+const { runMigrations } = require("./models");
+const registerRoutes = require("./routes");
 require("dotenv").config();
 
 const app = express();
@@ -29,6 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 addAuthHandlers(app);
+
+registerRoutes(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

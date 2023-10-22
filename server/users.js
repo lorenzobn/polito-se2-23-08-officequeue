@@ -21,10 +21,10 @@ export const registerUser = async (req, res) => {
       type: UserType.notVerified,
     });
     await newUser.save();
-    res.status(201).json(newUser);
+    res.status(201).json({ msg: "user created", data: newUser });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ error: "An unknown error occurred." });
+    return res.status(500).json({ msg: "An unknown error occurred." });
   }
 };
 
@@ -54,10 +54,10 @@ export const updateUser = async (req, res) => {
       user.type = type;
     }
     await user.save();
-    res.status(200).json(user);
+    res.status(200).json({ msg: "user updated", data: user });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ error: "An unknown error occurred." });
+    return res.status(500).json({ msg: "An unknown error occurred." });
   }
 };
 
@@ -68,9 +68,11 @@ export const getUsers = async (req, res) => {
       const { id, name, email, type, createdAt, updatedAt } = user;
       return { id, name, email, type, createdAt, updatedAt };
     });
-    res.status(200).json(usersWithoutPasswords);
+    res
+      .status(200)
+      .json({ msg: "users fetched successfully", data: usersWithoutPasswords });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ error: "An unknown error occurred." });
+    return res.status(500).json({ msg: "An unknown error occurred." });
   }
 };
