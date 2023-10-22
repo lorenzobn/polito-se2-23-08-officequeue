@@ -1,22 +1,22 @@
 const bcrypt = require("bcrypt");
 const { UserType } = require("./auth");
-
+const { User } = require("./models");
 const registerUser = async (req, res) => {
   try {
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    const { name, email, password } = req.body;
+    const { firstName, lastName, phone, email, password } = req.body;
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res
         .status(400)
         .json({ error: "User with this email already exists." });
     }
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the saltRounds
+    const hashedPassword = await bcrypt.hash(password, 10); 
     const newUser = await User.create({
-      name,
+      firstName,
+      lastName,
+      phone,
       email,
+
       password: hashedPassword,
       type: UserType.notVerified,
     });
@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
     res.status(201).json({ msg: "user created", data: newUser });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ msg: "An unknown error occurred." });
+    return res.status(500).json({ msg: error.message });
   }
 };
 

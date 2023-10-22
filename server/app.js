@@ -1,10 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const session = require("express-session");
 const crypto = require("crypto");
-const { addAuthHandlers } = require("./auth");
+const { addAuthHandlers, generateLocalPassport } = require("./auth");
 const { runMigrations } = require("./models");
 const registerRoutes = require("./routes");
 require("dotenv").config();
@@ -21,11 +20,12 @@ const randomSecret = crypto.randomBytes(64).toString("hex");
 
 app.use(
   session({
-    secret: randomSecret, // Replace this with a secure random string
+    secret: randomSecret,
     resave: false,
     saveUninitialized: false,
   })
 );
+const passport = generateLocalPassport();
 
 // Initialize Passport and restore authentication state if available
 app.use(passport.initialize());

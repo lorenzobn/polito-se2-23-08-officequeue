@@ -1,6 +1,7 @@
 const passport = require("passport");
 const LocalSequelizeStrategy = require("passport-local").Strategy;
 const { User } = require("./models");
+const bcrypt = require("bcrypt");
 
 const UserType = {
   inactive: 1,
@@ -48,16 +49,14 @@ const generateLocalPassport = () => {
 };
 
 const addAuthHandlers = (app) => {
-  app.post("/api/v1/login", passport.authenticate("local"), (req, res) => {
-    return res
-      .status(200)
-      .json({
-        msg: "logged in successfully",
-        data: { msg: "health check passed! API is alive.", data: req.user },
-      });
+  app.post("/api/v1.0/login", passport.authenticate("local"), (req, res) => {
+    return res.status(200).json({
+      msg: "logged in successfully",
+      data: req.user,
+    });
   });
 
-  app.post("/api/v1/logout", (req, res) => {
+  app.post("/api/v1.0/logout", (req, res) => {
     req.logout((err) => {
       if (err) {
         return res.status(500).json({ msg: err.message });
