@@ -1,6 +1,5 @@
 const express = require("express");
-const { registerUser, getUsers, updateUser } = require("../users/handler");
-const { homeHandler } = require("./handlers");
+const { registerUser, getUsers, updateUser } = require("./users");
 const { UserType, authorize } = require("./auth");
 
 const registerRoutes = (app) => {

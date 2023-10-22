@@ -10,7 +10,7 @@ const db = new Sequelize(database, username, password, {
   storage: "./database.sqlite",
 });
 
-const ServiceType = sequelize.define("ServiceType", {
+const ServiceType = db.define("ServiceType", {
   tagName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -21,14 +21,14 @@ const ServiceType = sequelize.define("ServiceType", {
   },
 });
 
-const Counter = sequelize.define("Counter", {
+const Counter = db.define("Counter", {
   counterNumber: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
 });
 
-const Ticket = sequelize.define("Ticket", {
+const Ticket = db.define("Ticket", {
   ticketCode: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -39,16 +39,16 @@ const Ticket = sequelize.define("Ticket", {
   },
 });
 
-const Queue = sequelize.define("Queue", {});
+const Queue = db.define("Queue", {});
 
-const Notification = sequelize.define("Notification", {
+const Notification = db.define("Notification", {
   message: {
     type: Sequelize.STRING,
     allowNull: false,
   },
 });
 
-const User = sequelize.define("User", {
+const User = db.define("User", {
   type: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -76,17 +76,6 @@ const User = sequelize.define("User", {
   },
 });
 
-module.exports = {
-  ServiceType,
-  Counter,
-  Ticket,
-  Queue,
-  Notification,
-  TicketCall,
-  Estimate,
-  User,
-  sequelize,
-};
 
 ServiceType.hasMany(Queue);
 Queue.belongsTo(ServiceType);
@@ -98,22 +87,12 @@ Queue.hasMany(Ticket);
 Ticket.belongsTo(Queue);
 Ticket.belongsTo(User, { foreignKey: "customerId" });
 
-Counter.hasMany(TicketCall);
-TicketCall.belongsTo(Counter);
-
-Ticket.hasOne(TicketCall);
-TicketCall.belongsTo(Ticket);
-
-Ticket.hasOne(Estimate);
-Estimate.belongsTo(Ticket);
 
 const runMigrations = async () => {
   try {
     // Run all pending migrations
     await db.authenticate();
-    await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
-    await sequelize.sync({ force: false });
-    await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+    await db.sync({ force: false });
     console.log("Database synchronized successfully.");
   } catch (error) {
     console.error("Error syncing database:", error);

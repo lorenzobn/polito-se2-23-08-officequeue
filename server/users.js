@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { UserType } = require("./auth");
 
-export const registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -28,7 +28,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const { error } = updateUserSchema.validate(req.body);
     if (error) {
@@ -61,7 +61,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     let users = await User.findAll();
     const usersWithoutPasswords = users.map((user) => {
@@ -75,4 +75,10 @@ export const getUsers = async (req, res) => {
     console.error(error.message);
     return res.status(500).json({ msg: "An unknown error occurred." });
   }
+};
+
+module.exports = {
+  getUsers,
+  registerUser,
+  updateUser,
 };
