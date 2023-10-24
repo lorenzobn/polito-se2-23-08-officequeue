@@ -33,8 +33,17 @@ const Ticket = db.define("Ticket", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
+  status: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 });
 
+const TicketStatus = {
+  open: 0,
+  processing: 1,
+  done: 2,
+};
 const Notification = db.define("Notification", {
   message: {
     type: Sequelize.STRING,
@@ -91,6 +100,7 @@ module.exports = {
   ServiceType,
   Counter,
   Ticket,
+  TicketStatus,
   Notification,
   User,
   db,
