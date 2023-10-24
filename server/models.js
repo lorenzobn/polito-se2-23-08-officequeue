@@ -21,6 +21,8 @@ const ServiceType = db.define("ServiceType", {
   },
 });
 
+const Queue = db.define("Queue", {});
+
 const Counter = db.define("Counter", {
   counterNumber: {
     type: Sequelize.INTEGER,
@@ -37,13 +39,7 @@ const Ticket = db.define("Ticket", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
-  queueId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
 });
-
-const Queue = db.define("Queue", {});
 
 const Notification = db.define("Notification", {
   message: {
@@ -80,14 +76,11 @@ const User = db.define("User", {
   },
 });
 
-ServiceType.hasMany(Queue);
-Queue.belongsTo(ServiceType);
-
-ServiceType.belongsToMany(Counter, { through: "ServiceTypeCounter" });
-Counter.belongsToMany(ServiceType, { through: "ServiceTypeCounter" });
-
+// Define the many-to-many relationship
+ServiceType.belongsToMany(Queue, { through: "ServiceTypeQueue" });
+Queue.belongsToMany(ServiceType, { through: "ServiceTypeQueue" });
 Queue.hasMany(Ticket);
-Ticket.belongsTo(Queue, { foreignKey: "queueId" });
+Ticket.belongsTo(Queue);
 Ticket.belongsTo(User, { foreignKey: "customerId" });
 
 const runMigrations = async () => {
