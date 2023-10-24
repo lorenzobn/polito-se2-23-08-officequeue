@@ -1,14 +1,36 @@
-const { User, Queue, Ticket, ServiceType } = require("./models");
+const { Ticket, ServiceType } = require("./models");
 
-const addTicket = async (req, res) => {
+const addServiceType = async (req, res) => {
   try {
-    const { serviceType } = req.body;
+    const { tagName, averageServiceTime } = req.body;
+    const serviceType = await ServiceType.create({
+      tagName,
+      averageServiceTime,
+    });
+    return res.status(201).json({ msg: "ServiceType created.", serviceType });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ msg: "An unknown error occurred." });
   }
 };
 
-const getQueueForServiceType = (serviceTypeTag) => {
-    
+const addTicket = async (req, res) => {
+  try {
+    const { serviceTypeTagName } = req.body;
+    const serviceType = await ServiceType.findOne({
+      where: { tagName: serviceTypeTagName },
+    });
+    if (!serviceType) {
+      return res.status(400).json({ msg: "invalid serviceTypeTagName" });
+    }
+    const ticket = await Ticket.create({
+      ServiceTypeId: serviceType.id,
+    });
+    return res.status(201).json({ msg: "ticket created.", ticket });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ msg: "An unknown error occurred." });
+  }
 };
+
+module.exports = { addTicket, addServiceType };
