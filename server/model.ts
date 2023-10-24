@@ -22,6 +22,7 @@ interface Ticket {
 }
 enum TicketStatus {
   open,
+  processing,
   passed,
   fulfilled,
   canceled,

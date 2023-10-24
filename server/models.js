@@ -22,10 +22,6 @@ const ServiceType = db.define("ServiceType", {
 });
 
 const Counter = db.define("Counter", {
-  counterNumber: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
   currentTicketId: {
     type: Sequelize.INTEGER,
     allowNull: true,
