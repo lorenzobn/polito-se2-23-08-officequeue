@@ -1,4 +1,4 @@
-const { Ticket, ServiceType } = require("./models");
+const { Ticket, ServiceType, Counter } = require("./models");
 
 const addServiceType = async (req, res) => {
   try {
@@ -8,6 +8,27 @@ const addServiceType = async (req, res) => {
       averageServiceTime,
     });
     return res.status(201).json({ msg: "ServiceType created.", serviceType });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ msg: "An unknown error occurred." });
+  }
+};
+
+const addCounter = async (req, res) => {
+  try {
+    const { counterNumber } = req.body;
+    const counter = await Counter.create({ counterNumber });
+    const { serviceTypeTagNames } = req.body;
+    if (!serviceTypeTagNames) {
+      return res.status(400).json({ msg: "serviceTypeTagNames are required" });
+    }
+    serviceTypeTagNames.forEach(async (tagName) => {
+      const serviceType = await ServiceType.findOne({
+        where: { tagName: tagName },
+      });
+      counter.addServiceType(serviceType);
+    });
+    return res.status(201).json({ msg: "counter added" });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ msg: "An unknown error occurred." });
@@ -33,4 +54,4 @@ const addTicket = async (req, res) => {
   }
 };
 
-module.exports = { addTicket, addServiceType };
+module.exports = { addTicket, addServiceType, addCounter };

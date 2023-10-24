@@ -1,6 +1,6 @@
 const { registerUser, getUsers } = require("./users");
 const { UserType, authorize } = require("./auth");
-const { addTicket, addServiceType } = require("./tickets");
+const { addTicket, addServiceType, addCounter } = require("./tickets");
 const registerRoutes = (app) => {
   // api health check
   app.get("/", (req, res) => {
@@ -16,6 +16,9 @@ const registerRoutes = (app) => {
 
   // serviceType routes
   app.post("/api/v1.0/service-types", addServiceType);
+
+  // counter routes
+  app.post("/api/v1.0/counters", addCounter);
 };
 
 module.exports = registerRoutes;
