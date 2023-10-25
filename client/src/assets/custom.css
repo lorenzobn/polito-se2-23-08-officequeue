@@ -1,0 +1,8 @@
+.ticket {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  background-color: rgb(252, 248, 161);
+  padding: 3rem;
+}

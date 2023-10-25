@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import API from './API.jsx';
 import './App.css';
+import './assets/custom.css';
 
 function App() {
   const [content, setContent] = useState('');
@@ -13,10 +15,15 @@ function App() {
 
     const handleClick = () => {
       // call the server-side API getTicket to get a ticket and parse the response with the tickets infos
-      // let ticketBooking = getTicket(content)
-      let ticketBooking = { number: 10, serviceType: content};
-      setTicketBooking(ticketBooking);
-      navigate('/ticket');
+      API.getTicket({"serviceTypeTagName" : content.toLowerCase()}).then(ticketBooking => {
+        //console.log(ticketBooking);
+        setTicketBooking(ticketBooking.data);
+        navigate('/ticket');
+      })
+      .catch(e => {
+        // Properly print in the View the Error, temporarly just console.log
+        console.log(e);
+      });
     }
 
 
@@ -41,7 +48,7 @@ function App() {
       <div>
         <h1>OFFICE QUEUE MANAGEMENT SYSTEM</h1>
       </div>
-      <div className='my-5'>
+      <div className='ticket'>
         {ticketBooking ? <Ticket></Ticket> : <ErrorMessage></ErrorMessage>}
       </div>
       </>
@@ -83,7 +90,7 @@ function App() {
     return (
       <>
       <h3>Great!</h3>
-      <h5>Your ticket number for the service {ticketBooking.serviceType} is: {ticketBooking.number} </h5>
+      <h5>Your ticket number for the service {ticketBooking.ServiceTypeId} is: {ticketBooking.id} </h5>
       </>
     )
   }
@@ -104,7 +111,7 @@ function App() {
     return (
         <Dropdown onSelect={handleSelect}>
             <DropdownButton title={content? content : "Select Service"} variant="primary"> 
-                <Dropdown.Item eventKey="Service A">Service A</Dropdown.Item>
+                <Dropdown.Item eventKey="Mail">Mail</Dropdown.Item>
                 <Dropdown.Item eventKey="Service B">Service B</Dropdown.Item>
                 <Dropdown.Item eventKey="Service C">Service C</Dropdown.Item>
                 <Dropdown.Item eventKey="Service D">Service D</Dropdown.Item>
