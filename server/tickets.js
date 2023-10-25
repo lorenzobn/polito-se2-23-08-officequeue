@@ -61,7 +61,7 @@ const serveNextTicket = async (req, res) => {
     const { counterNumber } = req.body;
     const counter = await Counter.findByPk(counterNumber);
     if (!counter) {
-      return res.status(400).json({ msg: "invalid coutner number" });
+      return res.status(400).json({ msg: "invalid counter number" });
     }
     const lastTicket = await Ticket.findByPk(counter.currentTicketId);
     if (!lastTicket) {
@@ -72,7 +72,7 @@ const serveNextTicket = async (req, res) => {
 
     const serviceTypes = await counter.getServiceTypes();
     if (!serviceTypes) {
-      return res.status(400).json({ msg: "coutner serves no service type" });
+      return res.status(400).json({ msg: "counter serves no service type" });
     }
     const queues = await Promise.all(
       serviceTypes.map(async (serviceType) => {
