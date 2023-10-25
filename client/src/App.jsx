@@ -64,6 +64,11 @@ function App() {
       { id: 5, text: 'Service E', buttonText: 'Next Customer' },
       { id: 6, text: 'Service F', buttonText: 'Next Customer' },
     ];
+
+    const handleButtonClick = (id) => {
+      API.nextCustomer(id);
+      console.log(`Button with id ${id} clicked`);
+    };
   
     return (
       <>
@@ -76,7 +81,7 @@ function App() {
               <div key={row.id} className="table-row">
                 <div className="table-cell">{row.text}</div>
                 <div className="table-cell">
-                  <button className='circle-button'>{row.buttonText}</button>
+                  <button className='circle-button' onClick={() => handleButtonClick(row.id)}>{row.buttonText}</button>
                 </div>
               </div>
             ))}
