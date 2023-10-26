@@ -15,7 +15,17 @@ const addServiceType = async (req, res) => {
     return res.status(500).json({ msg: "An unknown error occurred." });
   }
 };
-
+const getServiceTypes = async (req, res) => {
+  try {
+    const serviceTypes = await ServiceType.findAll();
+    return res
+      .status(201)
+      .json({ msg: "ServiceTypes fetched.", data: serviceTypes });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ msg: "An unknown error occurred." });
+  }
+};
 const addCounter = async (req, res) => {
   try {
     const counter = await Counter.create();
@@ -30,6 +40,16 @@ const addCounter = async (req, res) => {
       counter.addServiceType(serviceType);
     });
     return res.status(201).json({ msg: "counter added", data: counter });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ msg: "An unknown error occurred." });
+  }
+};
+
+const getCounters = async (req, res) => {
+  try {
+    const counters = await Counter.findAll();
+    return res.status(201).json({ msg: "counters fetched", data: counters });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ msg: "An unknown error occurred." });
@@ -126,4 +146,6 @@ module.exports = {
   addCounter,
   serveNextTicket,
   getCurrentTicket,
+  getCounters,
+  getServiceTypes,
 };

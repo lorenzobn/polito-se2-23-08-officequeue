@@ -6,6 +6,8 @@ const {
   addCounter,
   serveNextTicket,
   getCurrentTicket,
+  getCounters,
+  getServiceTypes,
 } = require("./tickets");
 const registerRoutes = (app) => {
   // api health check
@@ -25,9 +27,11 @@ const registerRoutes = (app) => {
 
   // serviceType routes
   app.post("/api/v1.0/service-types", addServiceType);
+  app.get("/api/v1.0/service-types", getServiceTypes);
 
   // counter routes
   app.post("/api/v1.0/counters", addCounter);
+  app.get("/api/v1.0/counters", getCounters);
 };
 
 module.exports = registerRoutes;

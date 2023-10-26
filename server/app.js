@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // CORS options to access APIs
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: "http://localhost:5173",
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -47,4 +47,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-export { app, PORT };
+module.exports = { app, PORT };
