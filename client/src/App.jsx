@@ -1,11 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
+import API from './API';
 
 function App() {
   const [content, setContent] = useState('');
+  const [services, setServices] = useState([]);
   const [ticketBooking, setTicketBooking] = useState({});
+
+  useEffect(() => {
+    API.getServices().then((services) => setServices(services));
+  }, []);
   
   function Main() {
     const navigate = useNavigate();
@@ -76,12 +82,7 @@ function App() {
     return (
         <Dropdown onSelect={handleSelect}>
             <DropdownButton title={content? content : "Select Service"} variant="primary"> 
-                <Dropdown.Item eventKey="Service A">Service A</Dropdown.Item>
-                <Dropdown.Item eventKey="Service B">Service B</Dropdown.Item>
-                <Dropdown.Item eventKey="Service C">Service C</Dropdown.Item>
-                <Dropdown.Item eventKey="Service D">Service D</Dropdown.Item>
-                <Dropdown.Item eventKey="Service E">Service E</Dropdown.Item>
-                <Dropdown.Item eventKey="Service F">Service F</Dropdown.Item>
+                {services.map((e) => <Dropdown.Item eventKey={e.tagName}>e.tagName</Dropdown.Item>)}
             </DropdownButton>
         </Dropdown>
     );
@@ -107,21 +108,18 @@ function App() {
               <td>A</td>
               <td>9</td>
               <td>10</td>
-              <td><Button>CALL NEXT</Button></td>
             </tr>
             <tr>
               <td>d2</td>
               <td>B</td>
               <td>12</td>
               <td>13</td>
-              <td><Button>CALL NEXT</Button></td>
             </tr>
             <tr>
               <td>d3</td>
               <td>C</td>
               <td>14</td>
               <td>15</td>
-              <td><Button>CALL NEXT</Button></td>
             </tr>
           </tbody>
         </Table> 
@@ -130,6 +128,7 @@ function App() {
           <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
         </div>
+        <Button onClick={() => navigate('/')}>CALL NEXT CUSTOMER</Button>
       </>
     )
   } 
