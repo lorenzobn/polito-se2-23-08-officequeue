@@ -55,6 +55,42 @@ function App() {
     )
   }
 
+  function NextCustomer(){
+    const rowData = [
+      { id: 1, text: 'Service A', buttonText: 'Next Customer' },
+      { id: 2, text: 'Service B', buttonText: 'Next Customer' },
+      { id: 3, text: 'Service C', buttonText: 'Next Customer' },
+      { id: 4, text: 'Service D', buttonText: 'Next Customer' },
+      { id: 5, text: 'Service E', buttonText: 'Next Customer' },
+      { id: 6, text: 'Service F', buttonText: 'Next Customer' },
+    ];
+
+    const handleButtonClick = (id) => {
+      API.nextCustomer(id);
+      console.log(`Button with id ${id} clicked`);
+    };
+  
+    return (
+      <>
+        <div>
+          <h1>OFFICE QUEUE MANAGEMENT SYSTEM</h1>
+        </div>
+        <div className="centered-container">
+          <div className="horizontal-table">
+            {rowData.map((row) => (
+              <div key={row.id} className="table-row">
+                <div className="table-cell">{row.text}</div>
+                <div className="table-cell">
+                  <button className='circle-button' onClick={() => handleButtonClick(row.id)}>{row.buttonText}</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+  }
+
   function Ticket(){
     return (
       <>
@@ -96,6 +132,7 @@ function App() {
       <Routes>
         <Route path={'/'} element={<Main></Main>}></Route>
         <Route path={'/ticket'} element={<ShowTicket></ShowTicket>}></Route>
+        <Route path={'/nextcustomer'} element={<NextCustomer></NextCustomer>}></Route>
       </Routes>
     </BrowserRouter>
   )
