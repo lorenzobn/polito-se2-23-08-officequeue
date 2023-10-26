@@ -50,5 +50,19 @@ async function nextCustomer(id){
   });
 }
 
-const API = {getTicket, nextCustomer};
+const getCounters = async () => {
+  const response = await fetch(URL + '/api/v1.0/counters', {
+    credentials: 'include',
+  });
+  const counters = await response.json();
+  if (response.ok) {
+    return counters;
+  } else {
+    response.json()
+      .then((message) => { reject(message); }) // error message in the response body
+      .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+  }
+};
+
+const API = {getTicket, nextCustomer, getCounters};
 export default API;
