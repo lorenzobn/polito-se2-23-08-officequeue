@@ -55,19 +55,41 @@ function App() {
     )
   }
 
-  function NextCustomer(){
-    const rowData = [
-      { id: 1, text: 'Service A', buttonText: 'Next Customer' },
-      { id: 2, text: 'Service B', buttonText: 'Next Customer' },
-      { id: 3, text: 'Service C', buttonText: 'Next Customer' },
-      { id: 4, text: 'Service D', buttonText: 'Next Customer' },
-      { id: 5, text: 'Service E', buttonText: 'Next Customer' },
-      { id: 6, text: 'Service F', buttonText: 'Next Customer' },
-    ];
-
-    const handleButtonClick = (id) => {
-      API.nextCustomer(id);
-      console.log(`Button with id ${id} clicked`);
+  function NextCustomer() {
+    const [rowData, setRowData] = useState([]);
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await API.getCounters();
+          const counterNumbers = response.data.map(item => item.id);
+          const rows = counterNumbers.map(number => ({ id: number, text: `Counter ${number}` }));
+          setRowData(rows);
+        } catch (error) {
+          console.error('Error fetching data from the API 2', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+    const handleButtonClick = async (id) => {
+      try {
+        console.log("counter id:", id);
+        const answer = await API.nextCustomer(id);
+        console.log("answer", answer);
+    
+        // Check the response for the error message
+        if (answer.msg === "An unknown error occurred.") {
+          window.alert("The next ticket for your services is not served yet.");
+        } else {
+          window.alert("The next ticket is being called!");
+        }
+      } catch (error) {
+        console.error('Error calling the API', error);
+        // Handle any other error that occurs during the API call
+        window.alert("An error occurred. Please try again later.");
+      }
     };
   
     return (
@@ -81,7 +103,7 @@ function App() {
               <div key={row.id} className="table-row">
                 <div className="table-cell">{row.text}</div>
                 <div className="table-cell">
-                  <button className='circle-button' onClick={() => handleButtonClick(row.id)}>{row.buttonText}</button>
+                  <button className='circle-button' onClick={() => handleButtonClick(row.id)}>Next</button>
                 </div>
               </div>
             ))}
