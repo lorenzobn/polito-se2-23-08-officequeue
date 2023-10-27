@@ -84,11 +84,10 @@ const serveNextTicket = async (req, res) => {
       return res.status(400).json({ msg: "invalid counter number" });
     }
     const lastTicket = await Ticket.findByPk(counter.currentTicketId);
-    if (!lastTicket) {
-      return res.status(500).json({ msg: "internal server error" });
+    if (!!lastTicket) {
+      lastTicket.status = TicketStatus.done;
+      await lastTicket.save();
     }
-    lastTicket.status = TicketStatus.done;
-    await lastTicket.save();
 
     const serviceTypes = await counter.getServiceTypes();
     if (!serviceTypes) {
@@ -108,14 +107,18 @@ const serveNextTicket = async (req, res) => {
     }, []);
 
     const ticket = longestQueue[0];
-    ticket.status = TicketStatus.processing;
-    ticket.save();
-    counter.currentTicketId = ticket.id;
-    counter.save();
+    console.log(ticket);
+    if (!!ticket) {
+      ticket.status = TicketStatus.processing;
+      ticket.save();
+      counter.currentTicketId = ticket.id;
+      counter.save();
 
-    return res
-      .status(201)
-      .json({ msg: "next ticket is being served.", data: ticket });
+      return res
+        .status(201)
+        .json({ msg: "next ticket is being served.", data: ticket });
+    }
+    return res.status(404).json({ msg: "no ticket to be served" });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({ msg: "An unknown error occurred." });
