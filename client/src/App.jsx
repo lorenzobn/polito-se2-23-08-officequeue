@@ -127,7 +127,8 @@ function App() {
       <h3>Great!</h3>
       <h5>Your ticket number for the service {ticketBooking.ServiceTypeId} is: {ticketBooking.id} </h5>
       <div className='my-5'>
-        <Button variant='primary' onClick={() => navigate('/status')}>SHOW QUEUE STATUS</Button> 
+        <Button className='mx-3' variant='primary' onClick={() => navigate('/')}>Go Back</Button> 
+        <Button className='mx-3' variant='primary' onClick={() => navigate('/status')}>SHOW QUEUE STATUS</Button> 
       </div>
       </>
     )
