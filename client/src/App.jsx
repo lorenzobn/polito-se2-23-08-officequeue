@@ -3,7 +3,6 @@ import { Button, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import API from './API.jsx';
 import './App.css';
-import API from './API';
 import './assets/custom.css';
 
 function App() {
@@ -12,7 +11,10 @@ function App() {
   const [ticketBooking, setTicketBooking] = useState({});
 
   useEffect(() => {
-    API.getServices().then((services) => setServices(services));
+    API.getServices().then((services) => {
+      setServices(services.data);
+      console.log(services);
+    });
   }, []);
   
   function Main() {
@@ -147,7 +149,7 @@ function App() {
     return (
         <Dropdown onSelect={handleSelect}>
             <DropdownButton title={content? content : "Select Service"} variant="primary"> 
-                {services.map((e) => <Dropdown.Item eventKey={e.tagName}>e.tagName</Dropdown.Item>)}
+                {services.map((e) => <Dropdown.Item eventKey={e.tagName}>{e.tagName}</Dropdown.Item>)}
             </DropdownButton>
         </Dropdown>
     );
