@@ -17,21 +17,15 @@ interface Ticket {
   id: number;
   ticketCode: string;
   customerId: number; // Foreign key referencing User id
-  queueId: number; // Foreign key referencing Queue id
   status: TicketStatus;
   done_on: Date;
 }
 enum TicketStatus {
   open,
+  processing,
   passed,
   fulfilled,
   canceled,
-}
-
-interface Queue {
-  id: number;
-  serviceType: ServiceType;
-  tickets: Ticket[];
 }
 
 interface User {
@@ -52,4 +46,4 @@ enum UserTypes {
   root, // big boss with all access
 }
 
-export { ServiceType, Counter, Ticket, Queue, User };
+export { ServiceType, Counter, Ticket, User };

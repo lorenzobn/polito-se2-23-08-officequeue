@@ -66,6 +66,7 @@ const getUsers = async (req, res) => {
     let users = await User.findAll();
     const usersWithoutPasswords = users.map((user) => {
       const { id, name, email, type, createdAt, updatedAt } = user;
+      // !! createdAt, updatedAt ? !!
       return { id, name, email, type, createdAt, updatedAt };
     });
     res
