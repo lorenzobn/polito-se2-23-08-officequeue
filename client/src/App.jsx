@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { useState, useEffect } from 'react'
+import { Button, Dropdown, DropdownButton, Table } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import API from './API.jsx';
 import './App.css';
+import API from './API';
 import './assets/custom.css';
 
 function App() {
   const [content, setContent] = useState('');
+  const [services, setServices] = useState([]);
   const [ticketBooking, setTicketBooking] = useState({});
-  
 
+  useEffect(() => {
+    API.getServices().then((services) => setServices(services));
+  }, []);
+  
   function Main() {
     const navigate = useNavigate();
 
@@ -114,10 +119,14 @@ function App() {
   }
 
   function Ticket(){
+    const navigate = useNavigate();
     return (
       <>
       <h3>Great!</h3>
       <h5>Your ticket number for the service {ticketBooking.ServiceTypeId} is: {ticketBooking.id} </h5>
+      <div className='my-5'>
+        <Button variant='primary' onClick={() => navigate('/status')}>SHOW QUEUE STATUS</Button> 
+      </div>
       </>
     )
   }
@@ -138,22 +147,62 @@ function App() {
     return (
         <Dropdown onSelect={handleSelect}>
             <DropdownButton title={content? content : "Select Service"} variant="primary"> 
-                <Dropdown.Item eventKey="Mail">Mail</Dropdown.Item>
-                <Dropdown.Item eventKey="Service B">Service B</Dropdown.Item>
-                <Dropdown.Item eventKey="Service C">Service C</Dropdown.Item>
-                <Dropdown.Item eventKey="Service D">Service D</Dropdown.Item>
-                <Dropdown.Item eventKey="Service E">Service E</Dropdown.Item>
-                <Dropdown.Item eventKey="Service F">Service F</Dropdown.Item>
+                {services.map((e) => <Dropdown.Item eventKey={e.tagName}>e.tagName</Dropdown.Item>)}
             </DropdownButton>
         </Dropdown>
     );
   }
 
+  function Status() {
+    const navigate = useNavigate();
+
+    return (
+      <>
+        <Table className='table-striped' style={{ tableLayout: 'fixed', }}>
+          <thead>
+            <tr>
+              <th>DESK</th>
+              <th>SERVICE</th>
+              <th>CURRENT CUSTOMER</th>
+              <th>NEXT CUSTOMER</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>d1</td>
+              <td>A</td>
+              <td>9</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>d2</td>
+              <td>B</td>
+              <td>12</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <td>d3</td>
+              <td>C</td>
+              <td>14</td>
+              <td>15</td>
+            </tr>
+          </tbody>
+        </Table> 
+        <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" className="btn btn-lg btn-primary fixed-right-bottom" viewBox="0 0 16 16" onClick={() => navigate('/')}>
+          <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        </div>
+      </>
+    )
+  } 
+  
   return (
     <BrowserRouter>
       <Routes>
         <Route path={'/'} element={<Main></Main>}></Route>
         <Route path={'/ticket'} element={<ShowTicket></ShowTicket>}></Route>
+        <Route path={'/status'} element={<Status></Status>}></Route>
         <Route path={'/nextcustomer'} element={<NextCustomer></NextCustomer>}></Route>
       </Routes>
     </BrowserRouter>

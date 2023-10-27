@@ -1,3 +1,4 @@
+=======
 const URL = 'http://localhost:3000';
 
 async function getTicket(reservation){
@@ -64,5 +65,15 @@ const getCounters = async () => {
   }
 };
 
-const API = {getTicket, nextCustomer, getCounters};
+async function getServices() {
+    const response = await fetch(URL + `/api/v1.0/service-types`);
+    const services = await response.json();
+    if (response.ok) {
+        return Object.assign({}, services);
+    } else {
+        throw services;
+    }
+}
+
+const API = {getTicket, nextCustomer, getCounters, getServices};
 export default API;
