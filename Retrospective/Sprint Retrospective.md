@@ -3,22 +3,26 @@
 ## PROCESS MEASURES
 Macro statistics
 **Number of stories committed vs. done**
-Committed: 3
+
+
+**Committed: 3**
 - Get ticket
 - Next Customer
 - Call Customer
-Done: 2
+
+
+**Done: 2**
 - Get Ticket
 - Next Customer 
 
 **Total points committed vs. done**
 
-Committed: 13
+**Committed: 13**
 - Get Ticket: 5
 - Next Customer: 3
 - Call Customer: 5
 
-Done: 8
+**Done: 8**
 - Get Ticket: 5
 - Next Customer: 3
 
