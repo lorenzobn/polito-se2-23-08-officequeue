@@ -1,9 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
-The retrospective should include at least the following sections:
-
-process measures
-quality measures
-general assessment
+Sprint Retrospective - Team 8
 
 PROCESS MEASURES
 Macro statistics
@@ -91,10 +86,10 @@ Negative:
 
 
 Which improvement goals set in the previous retrospective were you able to achieve?
-Not applicable
+Not applicable, because this is the first sprint. 
 
 Which ones you were not able to achieve? Why?
-Not applicable
+Not applicable, because this is the first sprint. 
 
 Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 Improve work definition, estimation, and self-assignment:
